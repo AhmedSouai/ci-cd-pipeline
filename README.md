@@ -8,8 +8,8 @@ Ce projet vise à implémenter une pipeline CI/CD complète pour une application
 
 ```
 ci-cd-pipeline/
-├── backend/              # Exemple : Node.js / Spring Boot
-├── frontend/             # Exemple : React / Angular
+├── backend/              #  Node.js
+├── frontend/             #  React 
 ├── jenkins/
 │   └── Jenkinsfile       # Pipeline script
 ├── tests/
