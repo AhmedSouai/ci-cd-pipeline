@@ -1,0 +1,19 @@
+{
+  "name": "ci-cd-backend",
+  "version": "1.0.0",
+  "description": "Node.js backend example",
+  "main": "app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1",
+    "chai": "^4.2.0"
+  },
+  "author": "",
+  "license": "ISC"
+}

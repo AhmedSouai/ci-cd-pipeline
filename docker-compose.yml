@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend/src:/app/src
+    environment:
+      NODE_ENV: production
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "80:80"
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend/build:/usr/share/nginx/html
+    command: ["nginx", "-g", "daemon off;"]
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend/build:/usr/share/nginx/html
+    depends_on:
+      - backend
