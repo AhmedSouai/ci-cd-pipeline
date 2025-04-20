@@ -1,4 +1,4 @@
-# CI/CD Pipeline Project 🚀 (En developpement) 
+# CI/CD Pipeline Project 🚀  (En developpement) 
 
 Ce projet vise à implémenter une pipeline CI/CD complète pour une application web avec un backend et un frontend. L'objectif est de configurer des processus automatisés pour la gestion des builds, tests, et déploiements en utilisant Docker, Jenkins et plusieurs outils de tests (unitaires, d'intégration, de performance et de sécurité).
 
