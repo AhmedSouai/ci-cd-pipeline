@@ -1,20 +1,20 @@
-# Utilise l'image officielle de Node.js comme base
+# Étape 1 : Utilisation de l'image Node.js
 FROM node:16
 
-# Crée un répertoire de travail pour ton application
+# Répertoire de travail
 WORKDIR /app
 
-# Copie le package.json et le package-lock.json dans le conteneur
-COPY package.json package-lock.json /app/
+# Copie des fichiers de configuration
+COPY package.json package-lock.json ./
 
-# Installe les dépendances dans le conteneur
-RUN npm install --production
+# Installation des dépendances
+RUN npm install
 
-# Copie le reste du code source dans le conteneur
-COPY . /app
+# Copie du code source dans le conteneur
+COPY ./src ./src
 
-# Expose le port sur lequel l'application écoute
+# Exposition du port 3000
 EXPOSE 3000
 
-# Démarre ton application
-CMD ["npm", "start"]
+# Commande pour démarrer le serveur
+CMD ["node", "src/app.js"]

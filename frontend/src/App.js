@@ -5,7 +5,7 @@ function App() {
 
   useEffect(() => {
     // Appel de l'API backend pour récupérer les utilisateurs
-    fetch('http://backend:3000/api/users')  // Utilise le nom du service backend dans Docker
+    fetch('/api/users')  // Utilise le nom du service backend dans Docker
       .then((response) => response.json())
       .then((data) => setUsers(data))
       .catch((error) => console.error('Error fetching users:', error));
