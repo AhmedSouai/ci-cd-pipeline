@@ -6,7 +6,7 @@ services:
       context: ./backend
     ports:
       - "3000:3000"
-  
+
   frontend:
     build:
       context: ./frontend
@@ -20,8 +20,8 @@ services:
       - backend
       - frontend
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock   # Pour permettre à Trivy de scanner les images Docker
-      - $HOME/Library/Caches:/root/.cache/           # Cache persistant pour Trivy
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $HOME/Library/Caches:/root/.cache/
     command: ["npm", "test"]
 
   trivy:
@@ -30,6 +30,23 @@ services:
       - backend
       - frontend
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock   # Monter le socket Docker pour permettre le scan des images
-      - $HOME/Library/Caches:/root/.cache/           # Cache persistant pour Trivy
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $HOME/Library/Caches:/root/.cache/
     entrypoint: ["sh", "-c", "trivy image ci-cd-pipeline_backend && trivy image ci-cd-pipeline_frontend"]
+
+  sonarqube:
+    image: sonarqube:lts
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+
+volumes:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
