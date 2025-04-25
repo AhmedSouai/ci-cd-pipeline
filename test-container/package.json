@@ -1,0 +1,19 @@
+{
+  "name": "ci-tests",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "npm run test:unit && npm run test:integration && npm run test:performance && npm run test:security",
+    "test:unit": "mocha unit-test.js",
+    "test:integration": "mocha integration-test.js",
+    "test:performance": "artillery run performance-test.yml"
+  },
+  "dependencies": {
+    "supertest": "^6.3.3"
+  },
+  "devDependencies": {
+    "artillery": "^2.0.0",
+    "mocha": "^10.0.0",
+    "supertest": "^6.3.3",
+    "chai": "^4.3.4"
+  }
+}

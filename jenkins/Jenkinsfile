@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+
+    environment {
+        REGISTRY = 'docker.io'
+        IMAGE_NAME_FRONTEND = 'ahmed92clmb/frontend'
+        IMAGE_NAME_BACKEND = 'ahmed92clmb/backend'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo "📦 Récupération du code"
+                checkout scm
+            }
+        }
+
+        stage('Build Frontend Image') {
+            steps {
+                echo "🔨 Construction de l'image Frontend"
+                script {
+                    docker.build("${IMAGE_NAME_FRONTEND}:${env.BRANCH_NAME}")
+                }
+            }
+        }
+
+        stage('Build Backend Image') {
+            steps {
+                echo "🔨 Construction de l'image Backend"
+                script {
+                    docker.build("${IMAGE_NAME_BACKEND}:${env.BRANCH_NAME}")
+                }
+            }
+        }
+
+        stage('Login Docker Hub') {
+            steps {
+                echo "🔐 Connexion à Docker Hub"
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
+                }
+            }
+        }
+
+        stage('Push Docker Images') {
+            steps {
+                echo "🚀 Push des images Docker"
+                script {
+                    docker.push("${IMAGE_NAME_FRONTEND}:${env.BRANCH_NAME}")
+                    docker.push("${IMAGE_NAME_BACKEND}:${env.BRANCH_NAME}")
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "🧹 Nettoyage des images locales"
+            sh 'docker logout'
+        }
+    }
+}

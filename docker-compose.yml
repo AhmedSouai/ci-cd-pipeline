@@ -5,16 +5,31 @@ services:
     build:
       context: ./backend
     ports:
-      - "3000:3000"  # Expose le backend sur le port 3000
-    volumes:
-      - ./backend/src:/app/src
-    environment:
-      NODE_ENV: production
-
+      - "3000:3000"
+  
   frontend:
     build:
       context: ./frontend
     ports:
-      - "8081:80"  # Nginx servira le frontend sur le port 80 (exposé sur le port 8081 de l'hôte)
+      - "8081:80"
+
+  test-container:
+    build:
+      context: ./test-container
     depends_on:
       - backend
+      - frontend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock   # Pour permettre à Trivy de scanner les images Docker
+      - $HOME/Library/Caches:/root/.cache/           # Cache persistant pour Trivy
+    command: ["npm", "test"]
+
+  trivy:
+    image: aquasec/trivy:latest
+    depends_on:
+      - backend
+      - frontend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock   # Monter le socket Docker pour permettre le scan des images
+      - $HOME/Library/Caches:/root/.cache/           # Cache persistant pour Trivy
+    entrypoint: ["sh", "-c", "trivy image ci-cd-pipeline_backend && trivy image ci-cd-pipeline_frontend"]
