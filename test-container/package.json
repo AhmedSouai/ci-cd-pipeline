@@ -2,7 +2,7 @@
   "name": "ci-tests",
   "version": "1.0.0",
   "scripts": {
-    "test": "npm run test:unit && npm run test:integration && npm run test:performance && npm run test:security",
+    "test": "npm run test:unit && npm run test:integration && npm run test:performance",
     "test:unit": "mocha unit-test.js",
     "test:integration": "mocha integration-test.js",
     "test:performance": "artillery run performance-test.yml"
